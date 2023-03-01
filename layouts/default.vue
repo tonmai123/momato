@@ -111,7 +111,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'เพื่อชีวิตที่ดีขึ้น'
+      title: 'ลุงประสิทธิ์ ซอฟแวร์'
     }
   }
 }
