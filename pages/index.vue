@@ -38,12 +38,13 @@
                 <div>
                   <div v-if="!!item.children">
                     <v-spacer />
-                    <v-btn color="info" @click="addNewField(item.id)">
+                    <v-btn color="info" @click="addNewField(item.id)" :disabled="item.id !== 0">
                       +
                     </v-btn>
                   </div>
                   <div v-else style="padding: 10px 0px;">
-                    <p>{{ item.index + 1 }}.</p>
+                    <div v-if="item.parentId === 0">
+                      <p>{{ item.index + 1 }}.</p>
                     <v-row>
                       <v-col cols="12" sm="6" md="3">
                         <v-select hide-details :items="projectNameItems" label="Project Name" v-model="item.data[2]"
@@ -76,6 +77,9 @@
                     </v-row>
                     <br>
                     <hr />
+                    </div>
+                    
+                   
                   </div>
                 </div>
               </template>
@@ -122,6 +126,7 @@
           id: 0,
           name: 'Hours for Project :',
           children: [{
+            parentId: 0,
             index: 0,
             data: ['1', '']
           }],
@@ -130,6 +135,7 @@
           id: 1,
           name: 'Hours for Non Project :',
           children: [{
+            parentId: 1,
             index: 0,
             data: ['1', '']
           }]
@@ -138,6 +144,7 @@
           id: 2,
           name: 'Hours for Non Project :',
           children: [{
+            parentId: 2,
             index: 0,
             data: ['1', '']
           }]
@@ -146,6 +153,7 @@
           id: 3,
           name: 'Hours for Incident/Bug Fix :',
           children: [{
+            parentId: 3,
             index: 0,
             data: ['', '']
           }]
@@ -154,6 +162,7 @@
           id: 4,
           name: 'Hours for Leave :',
           children: [{
+            parentId: 4,
             index: 0,
             data: ['', '']
           }],
@@ -167,6 +176,7 @@
         let indexText = id === 0 || id === 1 ? index.toString() : ''
 
         this.items[id].children.push({
+          parentId: id,
           index: index - 1 - id,
           data: [indexText, '']
         })
@@ -186,7 +196,7 @@
 
         this.items[0].children.forEach((element, index) => {
           let hour = element.data[element.data.length - 1]
-          element.data[element.data.length - 2] = hour
+          element.data[element.data.length] = hour
           totalHoursforProject += Number(hour)
 
           for (let i = 0; i < element.data.length; i++) {
@@ -197,7 +207,7 @@
 
         this.items[1].children.forEach((element, index) => {
           let hour = element.data[element.data.length - 1]
-          element.data[element.data.length - 2] = hour
+          element.data[element.data.length] = hour
           totalHoursforNonProject += Number(hour)
 
           for (let i = 0; i < element.data.length; i++) {
@@ -208,7 +218,7 @@
 
         this.items[2].children.forEach((element, index) => {
           let hour = element.data[element.data.length - 1]
-          element.data[element.data.length - 2] = hour
+          element.data[element.data.length] = hour
           totalHoursforIncident += Number(hour)
 
           for (let i = 0; i < element.data.length; i++) {
@@ -219,7 +229,7 @@
 
         this.items[3].children.forEach((element, index) => {
           let hour = element.data[element.data.length - 1]
-          element.data[element.data.length - 2] = hour
+          element.data[element.data.length] = hour
           totalHoursforTraining += Number(hour)
 
           for (let i = 0; i < element.data.length; i++) {
@@ -850,6 +860,11 @@ console.log(data);
         //#endregion border
         ///////////////////////////////////////////////////////////
 
+        let textCenter = {
+              vertical: 'middle',
+              horizontal: 'center'
+            }
+
         worksheet.mergeCells('A1:B2');
         worksheet.mergeCells('C1:H1');
         worksheet.mergeCells('I1:J2');
@@ -901,8 +916,32 @@ console.log(data);
         worksheet.getCell('H10').value = "Task description"
 
         // loop 13 rows or more than
+        for (let index = 0; index < 13; index++) {
+          if(index < data.projectItems.length){
+            let item = data.projectItems[index]
+            worksheet.getCell(`A${11 + index}`).value = item.data[0]
+            worksheet.getCell(`B${11 + index}`).value = item.data[1]
+            worksheet.getCell(`C${11 + index}`).value = item.data[2]
+            worksheet.getCell(`D${11 + index}`).value = item.data[3]
+            worksheet.getCell(`E${11 + index}`).value = item.data[4]
+            worksheet.getCell(`F${11 + index}`).value = item.data[5]
+            worksheet.getCell(`G${11 + index}`).value = item.data[6]
+            worksheet.getCell(`H${11 + index}`).value = item.data[7]
+            worksheet.getCell(`I${11 + index}`).value = item.data[8]
+            worksheet.getCell(`J${11 + index}`).value = item.data[9]
 
-
+            // worksheet.getCell(`A${11 + index}`).alignment = textCenter
+            // worksheet.getCell(`B${11 + index}`).alignment = textCenter
+            // worksheet.getCell(`C${11 + index}`).alignment = textCenter
+            // worksheet.getCell(`D${11 + index}`).alignment = textCenter
+            // worksheet.getCell(`E${11 + index}`).alignment = textCenter
+            // worksheet.getCell(`F${11 + index}`).alignment = textCenter
+            // worksheet.getCell(`G${11 + index}`).alignment = textCenter
+            // worksheet.getCell(`H${11 + index}`).alignment = textCenter
+            worksheet.getCell(`I${11 + index}`).alignment = textCenter
+            worksheet.getCell(`J${11 + index}`).alignment = textCenter
+          }
+        }
 
         worksheet.mergeCells('A23:H23');
         worksheet.mergeCells('J23:J24');
