@@ -1027,7 +1027,7 @@
           type: fileType
         });
 
-        saveAs(blob, 'Time Sheet 01_03_2566 FristName' + fileExtension)
+        saveAs(blob, `Time Sheet ${data.date} ${data.fullName}` + fileExtension)
         this.items = [{
                 id: 0,
                 name: 'Hours for Project :',
