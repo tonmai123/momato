@@ -22,8 +22,8 @@
                 <v-menu outlined v-model="menu2" :close-on-content-click="false" :nudge-right="40"
                   transition="scale-transition" offset-y min-width="auto">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-text-field outlined v-model="date" label="Picker without buttons" prepend-inner-icon="mdi-calendar" readonly
-                      v-bind="attrs" v-on="on"></v-text-field>
+                    <v-text-field outlined v-model="date" label="Picker without buttons"
+                      prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                   </template>
                   <v-date-picker v-model="date" @input="menu2 = false"></v-date-picker>
                 </v-menu>
@@ -45,41 +45,41 @@
                   <div v-else style="padding: 10px 0px;">
                     <div v-if="item.parentId === 0">
                       <p>{{ item.index + 1 }}.</p>
-                    <v-row>
-                      <v-col cols="12" sm="6" md="3">
-                        <v-select hide-details :items="projectNameItems" label="Project Name" v-model="item.data[2]"
-                          outlined></v-select>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="3">
-                        <v-select hide-details :items="projectStageItems" label="Project  Stage" outlined
-                          v-model="item.data[3]"></v-select>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="3">
-                        <v-select hide-details :items="statusItems" label="Status" outlined v-model="item.data[4]">
-                        </v-select>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="3">
-                        <v-select hide-details :items="deliveredToItems" label="Delivered to" outlined
-                          v-model="item.data[5]"></v-select>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field hide-details label="Notes" outlined v-model="item.data[6]">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="3">
-                        <v-text-field type="number" hide-details label="Hour" outlined v-model="item.data[8]">
-                        </v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="12" md="12">
-                        <v-text-field hide-details label="Task description" outlined v-model="item.data[7]">
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                    <br>
-                    <hr />
+                      <v-row>
+                        <v-col cols="12" sm="6" md="3">
+                          <v-select hide-details :items="projectNameItems" label="Project Name" v-model="item.data[2]"
+                            outlined></v-select>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="3">
+                          <v-select hide-details :items="projectStageItems" label="Project  Stage" outlined
+                            v-model="item.data[3]"></v-select>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="3">
+                          <v-select hide-details :items="statusItems" label="Status" outlined v-model="item.data[4]">
+                          </v-select>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="3">
+                          <v-select hide-details :items="deliveredToItems" label="Delivered to" outlined
+                            v-model="item.data[5]"></v-select>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field hide-details label="Notes" outlined v-model="item.data[6]">
+                          </v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="3">
+                          <v-text-field type="number" hide-details label="Hour" outlined v-model="item.data[8]">
+                          </v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="12" md="12">
+                          <v-text-field hide-details label="Task description" outlined v-model="item.data[7]">
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                      <br>
+                      <hr />
                     </div>
-                    
-                   
+
+
                   </div>
                 </div>
               </template>
@@ -250,7 +250,8 @@
         });
 
 
-        totalHours = totalHoursforProject + totalHoursforNonProject + totalHoursforIncident + totalHoursforTraining + totalHoursforLeave
+        totalHours = totalHoursforProject + totalHoursforNonProject + totalHoursforIncident + totalHoursforTraining +
+          totalHoursforLeave
 
 
         const data = {
@@ -278,7 +279,7 @@
           leaveItems: leaveItems,
         }
 
-console.log(data);
+        console.log(data);
 
         await this.generateToExcel(data)
       },
@@ -861,9 +862,9 @@ console.log(data);
         ///////////////////////////////////////////////////////////
 
         let textCenter = {
-              vertical: 'middle',
-              horizontal: 'center'
-            }
+          vertical: 'middle',
+          horizontal: 'center'
+        }
 
         worksheet.mergeCells('A1:B2');
         worksheet.mergeCells('C1:H1');
@@ -917,7 +918,7 @@ console.log(data);
 
         // loop 13 rows or more than
         for (let index = 0; index < 13; index++) {
-          if(index < data.projectItems.length){
+          if (index < data.projectItems.length) {
             let item = data.projectItems[index]
             worksheet.getCell(`A${11 + index}`).value = item.data[0]
             worksheet.getCell(`B${11 + index}`).value = item.data[1]
@@ -1026,7 +1027,55 @@ console.log(data);
           type: fileType
         });
 
-        saveAs(blob, 'Time Sheet 01_03_2566 FristName' + fileExtension);
+        saveAs(blob, 'Time Sheet 01_03_2566 FristName' + fileExtension)
+        this.items = [{
+                id: 0,
+                name: 'Hours for Project :',
+                children: [{
+                  parentId: 0,
+                  index: 0,
+                  data: ['1', '']
+                }],
+              },
+              {
+                id: 1,
+                name: 'Hours for Non Project :',
+                children: [{
+                  parentId: 1,
+                  index: 0,
+                  data: ['1', '']
+                }]
+              },
+              {
+                id: 2,
+                name: 'Hours for Non Project :',
+                children: [{
+                  parentId: 2,
+                  index: 0,
+                  data: ['1', '']
+                }]
+              },
+              {
+                id: 3,
+                name: 'Hours for Incident/Bug Fix :',
+                children: [{
+                  parentId: 3,
+                  index: 0,
+                  data: ['', '']
+                }]
+              },
+              {
+                id: 4,
+                name: 'Hours for Leave :',
+                children: [{
+                  parentId: 4,
+                  index: 0,
+                  data: ['', '']
+                }],
+              },
+            ]
+
+
 
         // save workbook to disk
         // workbook
